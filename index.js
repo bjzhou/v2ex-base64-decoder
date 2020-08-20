@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         V2EX base64 decode
 // @namespace    https://github.com/bjzhou/v2ex-base64-decoder
-// @version      0.4.1
+// @version      0.4.2
 // @description  base64自动解析
 // @author       Hinnka
 // @match        https://v2ex.com/*
@@ -17,7 +17,7 @@
 
     var blacklist = ["bilibili", "MyTomato"];
 
-    var reg = /[A-z0-9+/=]+/g
+    var reg = /[A-z0-9+/=]+(?!\<\/a\>)/g
     var replaceFunc = function(str) {
         if (str.length % 4 !== 0 || str.length < 8) {
             return str;
