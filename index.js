@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         V2EX base64 decode
 // @namespace    https://github.com/bjzhou/v2ex-base64-decoder
-// @version      0.4.2
+// @version      0.4.3
 // @description  base64自动解析
 // @author       Hinnka
 // @match        https://v2ex.com/*
@@ -17,29 +17,38 @@
 
     var blacklist = ["bilibili", "MyTomato"];
 
-    var reg = /[A-z0-9+/=]+(?!\<\/a\>)/g
-    var replaceFunc = function(str) {
-        if (str.length % 4 !== 0 || str.length < 8) {
-            return str;
-        }
-        if (blacklist.includes(str)) {
-            return str;
-        }
-        try {
-            return `${str}<span style="color:#EE6F2D">(${unescape(Base64.decode(str).replace(/\r?\n?/g, '').trim())})</span>`;
-        } catch (error) {
-            return str;
-        }
-    };
+    var reg = /[A-z0-9+/=]+/g
+
+    var replaceContent = function(el) {
+        var innerLinkTexts = Array.from(el.getElementsByTagName("a")).map(item => item.innerText);
+        el.innerHTML = el.innerHTML.replace(reg, function(str) {
+            if (str.length % 4 !== 0 || str.length < 8) {
+                return str;
+            }
+            for (var text of innerLinkTexts) {
+                if (text.includes(str)) {
+                    return str;
+                }
+            }
+            if (blacklist.includes(str)) {
+                return str;
+            }
+            try {
+                return `${str}<span style="color:#EE6F2D">(${unescape(Base64.decode(str).replace(/\r?\n?/g, '').trim())})</span>`;
+            } catch (error) {
+                return str;
+            }
+        })
+    }
 
     var topicContent = document.getElementsByClassName("topic_content")[0];
     if (topicContent) {
-        topicContent.innerHTML = topicContent.innerHTML.replace(reg, replaceFunc);
+        replaceContent(topicContent);
     }
     var replyContent = document.getElementsByClassName("reply_content");
     if (replyContent) {
         for (var i = 0; i < replyContent.length; i++) {
-            replyContent[i].innerHTML = replyContent[i].innerHTML.replace(reg, replaceFunc);
+            replaceContent(replyContent[i])
         }
     }
 })();
