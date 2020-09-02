@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         V2EX base64 decode
 // @namespace    https://github.com/bjzhou/v2ex-base64-decoder
-// @version      0.4.3
+// @version      0.4.4
 // @description  base64自动解析
 // @author       Hinnka
 // @match        https://v2ex.com/*
@@ -34,7 +34,7 @@
                 return str;
             }
             try {
-                return `${str}<span style="color:#EE6F2D">(${unescape(Base64.decode(str).replace(/\r?\n?/g, '').trim())})</span>`;
+                return `${str}<span style="color:#EE6F2D"><xmp style="display:inline;white-space:pre-wrap;word-wrap:break-word;">(${unescape(Base64.decode(str).replace(/\r?\n?/g, '').trim())})</xmp></span>`;
             } catch (error) {
                 return str;
             }
