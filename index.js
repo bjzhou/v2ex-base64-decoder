@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         V2EX base64 decode
 // @namespace    https://github.com/bjzhou/v2ex-base64-decoder
-// @version      0.4.7
+// @version      0.4.9
 // @description  base64自动解析
 // @author       Hinnka
 // @match        https://v2ex.com/*
