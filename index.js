@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         V2EX base64 decode
 // @namespace    https://github.com/bjzhou/v2ex-base64-decoder
-// @version      0.4.9
+// @version      0.5.0
 // @description  base64自动解析
 // @author       Hinnka
 // @match        https://v2ex.com/*
@@ -49,6 +49,23 @@
     if (replyContent) {
         for (var i = 0; i < replyContent.length; i++) {
             replaceContent(replyContent[i])
+        }
+    }
+
+    var replyTextArea = document.getElementById("reply_content");
+    if (replyTextArea) {
+        var form = replyTextArea.parentElement;
+        if (form) {
+            var base64ReplyFunc = function() {
+                replyTextArea.value = Base64.encode(replyTextArea.value);
+                form.submit();
+                // alert(replyTextArea.value);
+            };
+            form.insertAdjacentHTML("beforeend", '<input type="button" id="base64Reply" value="base64回复" class="super normal button" style="margin-left: 10px"></input>');
+            var base64Reply = document.getElementById("base64Reply");
+            if(base64Reply) {
+                base64Reply.onclick = base64ReplyFunc;
+            }
         }
     }
 })();
